@@ -6,7 +6,7 @@
 <!-- Header -->
 <br />
 <div align="center">
-  <a href="icon">
+  <a href="./rezume-logo.png">
     <img src="./rezume-logo.png" alt="Logo" width="150" height="150">
   </a>
 
@@ -16,11 +16,9 @@
     An awesome LaTeX resume template to jumpstart your job search!
     <br />
     <br />
-    <!-- <a href="">View on Overleaf</a> -->
-    <!-- · -->
     <a href="https://www.overleaf.com/latex/templates/rezume/kfrvqywfkwjs">View on Overleaf</a>
     |
-    <a href="https://github.com/nanup/Rezume/issues">Report Bug</a>
+    <a href="https://github.com/nanupnch/Rezume/issues">Report Bug</a>
   </p>
 </div>
 
@@ -48,14 +46,14 @@
 ## About The Project
 
 <div align="center">
-  <a href="product-screenshot">
+  <a href="./rezume-preview.jpg">
       <img src="./rezume-preview.jpg" alt="Preview" height="500">
   </a>
-  </br>
-  </br>
-  <a href="/rezume.pdf">View Generated PDF</a>
+  <br />
+  <br />
+  <a href="./rezume.pdf">View Generated PDF</a>
 </div>
-</br>
+<br />
 There are many great LaTeX resume templates available on GitHub and Overleaf; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a resume template so amazing that it'll be the last one you ever need.
 
 Here's what's in here:
@@ -74,17 +72,59 @@ Use the `rezume.tex` to get started.
 
 ### Prerequisites
 
-You will need LaTeX typesetting system to be able to generate pdfs from the `.tex` file.
+Install a LaTeX distribution and `latexmk`. **pdfLaTeX is the default compiler**; XeLaTeX and LuaLaTeX are also supported. The template uses Source Sans Pro. Its pdfLaTeX font support also needs the `ly1` and `mweights` packages, plus `ulem` and the other packages listed in `rezume.tex`.
 
-I use [MiKTeX](https://miktex.org/), a free and open-source distribution of the TeX/LaTeX typesetting system for Microsoft Windows.
+On Debian or Ubuntu:
 
-[MiKTeX](https://miktex.org/) provides the tools necessary to prepare documents using the TeX/LaTeX markup language, as well as a simple TeX editor: [TeXworks](https://www.tug.org/texworks/).
+```sh
+sudo apt-get update
+sudo apt-get install --no-install-recommends make latexmk texlive-latex-extra \
+  texlive-fonts-recommended texlive-fonts-extra texlive-plain-generic
+```
+
+For the optional compilers, also install `texlive-xetex` and `texlive-luatex`. The full [MacTeX](https://www.tug.org/mactex/) distribution includes these tools on macOS. On Windows, use [MiKTeX](https://miktex.org/), install missing packages through MiKTeX Console, and run the `latexmk` command below from the repository directory. MiKTeX's `latexmk` also requires Perl, such as [Strawberry Perl](https://strawberryperl.com/).
+
+### Build and customize
+
+Edit `rezume.tex`, replacing the example name, contact details, project links, and certification links with your own. Build from the repository directory:
+
+```sh
+make build
+```
+
+The PDF is written to `build/pdflatex/rezume.pdf`. To build without Make:
+
+```sh
+latexmk -pdf -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error \
+  -outdir=build/pdflatex rezume.tex
+```
+
+Select another compiler with `make build ENGINE=xelatex` or `make build ENGINE=lualatex`. Each compiler has its own output directory under `build/`. `make clean` removes the selected compiler's PDF and auxiliary files. Local build outputs, including SyncTeX, are ignored by Git; the root PDF and preview image are published samples.
+
+Long contact details wrap within the header columns. When adding content, check the generated PDF for line wrapping and pagination. Unicode mappings support text extraction, but they do not guarantee compatibility with every applicant tracking system or produce a tagged, accessible PDF.
+
+### Development checks and sample updates
+
+The checks require Python 3.9 or newer and the dependency in `requirements-dev.txt`. Debian and Ubuntu users also need `python3-venv` (`sudo apt-get install python3-venv`). On Linux or macOS:
+
+```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-dev.txt
+make check
+```
+
+On Windows, create the environment with `py -3 -m venv .venv`, activate it in Command Prompt with `.venv\Scripts\activate`, and run `python -m pip install -r requirements-dev.txt`. After the `latexmk` build above, you can run the checks without Make using `python -m unittest discover -s tests -v`.
+
+Run `make check ENGINE=xelatex` and `make check ENGINE=lualatex` to test the other compilers. The checks compile the sample and longer contact examples, verify PDF content and hyperlinks, reject layout warnings, and confirm that font-size changes stay within their intended blocks. GitHub Actions runs them with all three compilers.
+
+Maintainers can refresh the checked-in sample PDF and image with `make sample`. This target also requires Poppler's `pdftoppm` (`sudo apt-get install poppler-utils` on Debian or Ubuntu). Review the generated samples before committing them.
 
 <!-- LICENSE -->
 
 ## License
 
-Distributed under the MIT License. See `LICENSE.txt` for more information.
+Distributed under the MIT License. See [LICENSE.txt](./LICENSE.txt) for the Rezume and upstream copyright notices.
 
 <!-- CONTACT -->
 
@@ -92,7 +132,7 @@ Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 Nanu Panchamurthy - nanup.personal@gmail.com
 
-Project Link: [https://github.com/nanup/Rezume](https://github.com/nanup/Rezume)
+Project Link: [https://github.com/nanupnch/Rezume](https://github.com/nanupnch/Rezume)
 
 <!-- ACKNOWLEDGMENTS -->
 
@@ -103,7 +143,7 @@ Project Link: [https://github.com/nanup/Rezume](https://github.com/nanup/Rezume)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/nanupnch/Rezume.svg?style=for-the-badge
+[license-url]: ./LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/nanu-panchamurthy

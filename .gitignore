@@ -1,0 +1,16 @@
+/build/
+/.venv/
+__pycache__/
+*.pyc
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.xdv
+*.dvi
+*.toc
+*.nav
+*.snm
+*.vrb

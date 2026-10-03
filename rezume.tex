@@ -4,7 +4,7 @@
 % Based off of: https://github.com/sb2nov/resume
 % License : MIT
 
-% Hope this resume template helps you land an awesome job. If you found this helpful, please consider starring the github repo here, .
+% If this template helps you, consider starring https://github.com/nanupnch/Rezume.
 %-------------------------
 
 
@@ -20,7 +20,7 @@
 
 \usepackage{enumitem} % provides control over enumerate, itemize and description
 
-\usepackage{fancyhdr} % provides extensive facilities for constructing headers, footers and also controlling their use
+\usepackage{iftex} % detects the compiler before using engine-specific commands
 
 \usepackage{tabularx} % defines an environment tabularx, extension of "tabular" with an extra designator x, paragraph like column whose width automatically expands to fill the width of the environment
 
@@ -32,13 +32,15 @@
 
 \usepackage[hidelinks]{hyperref} % removes color and shadow of hyperlinks
 
-\usepackage[normalem]{ulem} % provides "\ul" (uline) command which will break at line breaks
+\usepackage[normalem]{ulem} % provides \uline for underlining text across spaces and line breaks
 
 \usepackage[english]{babel} % provides culturally determined typographical rules for wide range of languages
 %-----------------------------------------
 
-\input glyphtounicode % converts glyph names to unicode
-\pdfgentounicode=1 % ensures pdfs generated are ats readable
+\ifPDFTeX
+  \input glyphtounicode % maps Type 1 glyph names to Unicode for text extraction
+  \pdfgentounicode=1
+\fi % XeLaTeX and LuaLaTeX use Unicode OpenType fonts instead
 
 %----------FONT OPTIONS-------------------
 \usepackage[default]{sourcesanspro} % uses the font source sans pro
@@ -47,13 +49,9 @@
 
 
 %----------MARGIN OPTIONS-----------------
-\pagestyle{fancy} % set page style to one configured by fancyhdr
-\fancyhf{} % clear all header and footer fields
+\pagestyle{empty} % omit headers and footers
 
-\renewcommand{\headrulewidth}{0in} % sets thickness of linerule under header to zero
-\renewcommand{\footrulewidth}{0in} % sets thickness of linerule over footer to zero
-
-\setlength{\tabcolsep}{0in} % sets thickness of column separator in tables to zero
+\setlength{\tabcolsep}{0in} % removes horizontal padding around table columns
 
 % origin of the document is one inch from the top and from and the left
 % oddsidemargin and evensidemargin both refer to the left margin
@@ -61,11 +59,11 @@
 \addtolength{\oddsidemargin}{-0.5in}
 \addtolength{\topmargin}{-0.5in}
 
-\addtolength{\textwidth}{1.0in} % sets width of text area in the page to one inch
-\addtolength{\textheight}{1.0in} % sets height of text area in the page to one inch
+\addtolength{\textwidth}{1.0in} % expands the text area by one inch
+\addtolength{\textheight}{1.0in} % expands the text area by one inch
 
-\raggedbottom{} % makes all pages the height of current page, no extra vertical space added
-\raggedright{} % makes all pages the width of current page, no extra horizontal space added
+\raggedbottom{} % leaves unused space at the bottom instead of stretching vertical gaps
+\raggedright{} % aligns text to the left without justifying the right edge
 %------------------------------------------
 
 
@@ -90,7 +88,7 @@
 
 %--------REDEFINITIONS----------------
 % redefines the style of the bullet point
-\renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
+\renewcommand\labelitemii{{\tiny\textbullet}}
 
 % redefines the underline depth to 2pt
 \renewcommand{\ULdepth}{2pt}
@@ -102,53 +100,55 @@
 
 % resumeItem renders a bullet point
 \newcommand{\resumeItem}[1]{
-  \item\small{#1}
+  \item{\small #1\par}
 }
 
 % commands to start and end itemization of resumeItem, rightmargin set to 0.11in to avoid the overflow of resumetItem beyond whatever resumeItemHeading is being used
-\newcommand{\resumeItemListStart}{\begin{itemize}[rightmargin=0.11in]}
+\newcommand{\resumeItemListStart}{\begin{itemize}[rightmargin=0.11in, topsep=3pt, parsep=0pt, itemsep=2pt]}
 \newcommand{\resumeItemListEnd}{\end{itemize}}
 
 % resumeSectionType renders a bolded type to be used under a section, used as skill type here, middle element is used to keep ":"s in the same vertical line
 \newcommand{\resumeSectionType}[3]{
-  \item\begin{tabular*}{0.96\textwidth}[t]{
-    p{0.15\linewidth}p{0.02\linewidth}p{0.81\linewidth}
-  }
-    \textbf{#1} & #2 & #3
-  \end{tabular*}\vspace{-2pt}
+  \item{\small
+    \begin{tabularx}{\linewidth}[t]{@{}p{0.15\linewidth}p{0.02\linewidth}X@{}}
+      \textbf{#1} & #2 & #3
+    \end{tabularx}\par
+  }\vspace{-2pt}
 }
 
 % resumeTrioHeading renders three elements in three columns with second element being italicized and first element bolded, can be used for projects with three elements
 \newcommand{\resumeTrioHeading}[3]{
-  \item\small{
+  \item{\small
     \begin{tabular*}{0.96\textwidth}[t]{
       l@{\extracolsep{\fill}}c@{\extracolsep{\fill}}r
     }
       \textbf{#1} & \textit{#2} & #3
-    \end{tabular*}
+    \end{tabular*}\par
   }
 }
 
 % resumeQuadHeading renders four elements in a two columns with the second row being italicized and first element of first row bolded, can be used for experience and projects with four elements
 \newcommand{\resumeQuadHeading}[4]{
-  \item
-  \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
-    \textbf{#1} & #2 \\
-    \textit{\small#3} & \textit{\small #4} \\
-  \end{tabular*}
+  \item{\small
+    \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{#3} & \textit{#4} \\
+    \end{tabular*}\par
+  }
 }
 
 % resumeQuadHeadingChild renders the second row of resumeQuadHeading, can be used for experience if different roles in the same company need to added
 \newcommand{\resumeQuadHeadingChild}[2]{
-  \item
-  \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
-    \textbf{\small#1} & {\small#2} \\
-  \end{tabular*}
+  \item{\small
+    \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+    \end{tabular*}\par
+  }
 }
 
-% commands to start and end itemization of resumeQuadHeading, lefmargin for left indent of 0.15in for resumeItems
+% commands to start and end heading lists, with a left indent of 0.15in
 \newcommand{\resumeHeadingListStart}{
-  \begin{itemize}[leftmargin=0.15in, label={}]
+  \begin{itemize}[leftmargin=0.15in, label={}, topsep=4pt, parsep=0pt, itemsep=3pt]
 }
 \newcommand{\resumeHeadingListEnd}{\end{itemize}}
 %-------------------------------------------
@@ -163,23 +163,24 @@
 
 \begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X@{\hspace{1em}}>{\raggedleft\arraybackslash}X@{}}
   {\Huge\bfseries Jane Doe\par}\vspace{2pt}
-  \href{https://jane-doe.com}{\uline{jane-doe.com}} $|$
-  \href{https://linkedin.com/in/jane-doe}{\uline{LinkedIn}} $|$
-  \href{https://github.com/jane-doe}{\uline{GitHub}} $|$
+  \href{https://jane-doe.com}{\uline{jane-doe.com}} \textbar{}
+  \href{https://linkedin.com/in/jane-doe}{\uline{LinkedIn}} \textbar{}
+  \href{https://github.com/jane-doe}{\uline{GitHub}} \textbar{}
   \href{https://leetcode.com/jane-doe}{\uline{Leetcode}} &
   Location: Anycity, Anystate, Anycountry \par
-  Email: \href{mailto:jane.doe@anymail.com}{\nolinkurl{jane.doe@anymail.com}} $|$
+  Email: \href{mailto:jane.doe@anymail.com}{\nolinkurl{jane.doe@anymail.com}} \textbar{}
   Mobile: 5555555555 \\
 \end{tabularx}
 %--------------------------------------------
 
 
 %-----------SUMMARY--------------------------
-% Keep this short, simple and straigth to point
+% Keep this short, simple and straight to the point
 
 \section{Full Stack Developer}
-\small{
+{\small
   I am a highly skilled web developer with over \textbf{3 years of experience} in \textbf{HTML, CSS, JavaScript, and PHP}. I have knowledge of popular frameworks such as \textbf{React, Angular, and Vue.js} and experience with REST APIs and MVC frameworks.
+  \par
 }
 %--------------------------------------------
 
@@ -199,7 +200,7 @@
 
 
 %-----------EXPERIENCE-----------------------
-% Distill all your talking points to small bullet points which follow the pattern "challenge-action-result" for maximum efficiency. Try to quantify (use numbers) your points whenver possible, highlist words of importance
+% Use concise "challenge-action-result" bullets, quantify results when possible, and highlight important words.
 
 \section{Experience}
 \resumeHeadingListStart{}
@@ -242,7 +243,7 @@
 
 \section{Projects}
   \resumeHeadingListStart{}
-    \resumeTrioHeading{\href{https://project1.com}{\uline{Project 1}}}{React.js, Redux, PHP, MySQL Git}{\href{https://proect1.com/source-code/}{\uline{Source Code}}}
+    \resumeTrioHeading{\href{https://project1.com}{\uline{Project 1}}}{React.js, Redux, PHP, MySQL, Git}{\href{https://project1.com/source-code/}{\uline{Source Code}}}
       \resumeItemListStart{}
         \resumeItem{Designed and developed a clean and modern website using \textbf{HTML, CSS, and JavaScript}}
         \resumeItem{Optimized website for \textbf{speed and user experience}}
@@ -250,7 +251,7 @@
         \resumeItem{Deployed on GitHub pages via GitHub Actions}
       \resumeItemListEnd{}
 
-      \resumeTrioHeading{Project 2}{Node.js, Express, JavaScript, Git}{\href{https:project2.com/source-code}{\uline{Source Code}}}
+      \resumeTrioHeading{Project 2}{Node.js, Express, JavaScript, Git}{\href{https://project2.com/source-code/}{\uline{Source Code}}}
       \resumeItemListStart{}
         \resumeItem{A \textbf{CRUD application} exposed using a RESTful API made with Node.js}
         \resumeItem{Exposed POST, GET, PATCH and DELETE HTTP methods using \textbf{Express}}
@@ -260,7 +261,7 @@
 
 
 %----------------OTHERS----------------------
-% You can add your acheivements, accolades, certifications etc. here.
+% You can add your achievements, accolades, certifications, etc. here.
 
 \section{Certifications}
   \resumeItemListStart{}

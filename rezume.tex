@@ -159,18 +159,18 @@
 \begin{document}
 
 %-----------CONTACT DETAILS------------------
-% Make sure all the details are correct, you can add more links in the first row of second column if needed
+% Keep contact details in wrapping columns so longer names and locations stay within the page.
 
-\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
-  \textbf{\Huge Jane Doe \vspace{2pt}} & % row = 1, col = 1
-  Location: Anycity, Anystate, Anycountry \\ % row = 1, col = 2
-  \href{https://jane-doe.com}{\uline{jane-doe.com}} $|$ % row = 2, col = 1
-  \href{https://linkedin.com/in/jane-doe}{\uline{LinkedIn}} $|$ % row = 2, col = 1
-  \href{https://github.com/jane-doe}{\uline{GitHub}} $|$ % row = 2, col = 1
-  \href{https://leetcode.com/jane-doe}{\uline{Leetcode}} & % row = 2, col = 1
-  Email: \href{mailto:jane.doe@anymail.com}{\uline{jane.doe@anymail.com}} $|$ % row = 2, col = 2
-  Mobile: 5555555555 \\ % row = 2, col = 2
-\end{tabular*}
+\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}X@{\hspace{1em}}>{\raggedleft\arraybackslash}X@{}}
+  {\Huge\bfseries Jane Doe\par}\vspace{2pt}
+  \href{https://jane-doe.com}{\uline{jane-doe.com}} $|$
+  \href{https://linkedin.com/in/jane-doe}{\uline{LinkedIn}} $|$
+  \href{https://github.com/jane-doe}{\uline{GitHub}} $|$
+  \href{https://leetcode.com/jane-doe}{\uline{Leetcode}} &
+  Location: Anycity, Anystate, Anycountry \par
+  Email: \href{mailto:jane.doe@anymail.com}{\nolinkurl{jane.doe@anymail.com}} $|$
+  Mobile: 5555555555 \\
+\end{tabularx}
 %--------------------------------------------
 
 

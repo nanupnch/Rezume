@@ -116,33 +116,35 @@
   }\vspace{-2pt}
 }
 
-% resumeTrioHeading renders three elements in three columns with second element being italicized and first element bolded, can be used for projects with three elements
+% resumeTrioHeading renders three wrapping columns within the current list width
 \newcommand{\resumeTrioHeading}[3]{
   \item{\small
-    \begin{tabular*}{0.96\textwidth}[t]{
-      l@{\extracolsep{\fill}}c@{\extracolsep{\fill}}r
+    \begin{tabularx}{\linewidth}[t]{
+      @{}>{\raggedright\arraybackslash}X@{\hspace{1em}}
+      >{\centering\arraybackslash}X@{\hspace{1em}}
+      >{\raggedleft\arraybackslash}X@{}
     }
       \textbf{#1} & \textit{#2} & #3
-    \end{tabular*}\par
+    \end{tabularx}\par
   }
 }
 
 % resumeQuadHeading renders four elements in a two columns with the second row being italicized and first element of first row bolded, can be used for experience and projects with four elements
 \newcommand{\resumeQuadHeading}[4]{
   \item{\small
-    \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \begin{tabularx}{\linewidth}[t]{@{}>{\raggedright\arraybackslash}X@{\hspace{1em}}>{\raggedleft\arraybackslash}X@{}}
       \textbf{#1} & #2 \\
       \textit{#3} & \textit{#4} \\
-    \end{tabular*}\par
+    \end{tabularx}\par
   }
 }
 
 % resumeQuadHeadingChild renders the second row of resumeQuadHeading, can be used for experience if different roles in the same company need to added
 \newcommand{\resumeQuadHeadingChild}[2]{
   \item{\small
-    \begin{tabular*}{0.96\textwidth}[t]{l@{\extracolsep{\fill}}r}
+    \begin{tabularx}{\linewidth}[t]{@{}>{\raggedright\arraybackslash}X@{\hspace{1em}}>{\raggedleft\arraybackslash}X@{}}
       \textbf{#1} & #2 \\
-    \end{tabular*}\par
+    \end{tabularx}\par
   }
 }
 

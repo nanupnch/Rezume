@@ -101,7 +101,7 @@ latexmk -pdf -synctex=1 -interaction=nonstopmode -halt-on-error -file-line-error
 
 Select another compiler with `make build ENGINE=xelatex` or `make build ENGINE=lualatex`. Each compiler has its own output directory under `build/`. `make clean` removes the selected compiler's PDF and auxiliary files. Local build outputs, including SyncTeX, are ignored by Git; the root PDF and preview image are published samples.
 
-Long contact details wrap within the header columns. When adding content, check the generated PDF for line wrapping and pagination. Unicode mappings support text extraction, but they do not guarantee compatibility with every applicant tracking system or produce a tagged, accessible PDF.
+Long contact details and heading text wrap within their columns. When adding content, check the generated PDF for line wrapping and pagination. Unicode mappings support text extraction, but they do not guarantee compatibility with every applicant tracking system or produce a tagged, accessible PDF.
 
 ### Development checks and sample updates
 
@@ -116,7 +116,7 @@ make check
 
 On Windows, create the environment with `py -3 -m venv .venv`, activate it in Command Prompt with `.venv\Scripts\activate`, and run `python -m pip install -r requirements-dev.txt`. After the `latexmk` build above, you can run the checks without Make using `python -m unittest discover -s tests -v`.
 
-Run `make check ENGINE=xelatex` and `make check ENGINE=lualatex` to test the other compilers. The checks compile the sample and longer contact examples, verify PDF content and hyperlinks, reject layout warnings, and confirm that font-size changes stay within their intended blocks. GitHub Actions runs them with all three compilers.
+Run `make check ENGINE=xelatex` and `make check ENGINE=lualatex` to test the other compilers. The checks compile the sample and longer contact and heading examples, verify PDF content and hyperlinks, reject layout warnings, and confirm that font-size changes stay within their intended blocks. GitHub Actions runs them with all three compilers.
 
 Maintainers can refresh the checked-in sample PDF and image with `make sample`. This target also requires Poppler's `pdftoppm` (`sudo apt-get install poppler-utils` on Debian or Ubuntu). Review the generated samples before committing them.
 

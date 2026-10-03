@@ -20,6 +20,7 @@ jobs:
         with:
           python-version: '3.12'
           cache: pip
+          cache-dependency-path: requirements-dev.txt
       - name: Install LaTeX and check dependencies
         run: |
           sudo apt-get update

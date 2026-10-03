@@ -1,4 +1,4 @@
-"""Compile real PDFs to catch contact clipping, broken links, and font-size leaks."""
+"""Compile real PDFs to catch clipped text, broken links, and font-size leaks."""
 
 import os
 from pathlib import Path
@@ -128,6 +128,44 @@ class ResumeTests(unittest.TestCase):
         self.assertEqual(len(sizes), 2)
         self.assertEqual(sizes[0], sizes[1])
 
+    def test_long_headings_remain_readable(self):
+        cases = {
+            "long-project-heading": {
+                r"\uline{Project 1}": r"\uline{Distributed Event Processing and Observability Platform}",
+                "React.js, Redux, PHP, MySQL, Git":
+                    "TypeScript, React, Next.js, Node.js, PostgreSQL, Redis, Docker, "
+                    "Kubernetes, AWS, Terraform, GitHub Actions",
+                r"\uline{Source Code}": r"\uline{Repository and Architecture Documentation}",
+            },
+            "long-experience-heading": {
+                "{Web Developer}{Apr 2022 -- Present}":
+                    "{Senior Software Engineer, Developer Experience and Platform Infrastructure}"
+                    "{September 2022 -- Present}",
+                "{Anycompany}{Remote -- AnyCity, Anystate, Anycountry}":
+                    "{International Research and Software Development Corporation}"
+                    "{Greater Los Angeles Metropolitan Area, California, United States}",
+            },
+            "long-child-heading": {
+                "{Backend Developer Intern}{Jan 2021 -- Aug 2021}":
+                    "{Software Engineering Intern, Developer Experience and Platform Infrastructure}"
+                    "{January 2021 -- August 2021}",
+            },
+        }
+        for case, replacements in cases.items():
+            with self.subTest(case=case):
+                source = self.source
+                for before, after in replacements.items():
+                    self.assertIn(before, source)
+                    source = source.replace(before, after)
+                reader, log = self.compile_case(case, source)
+                self.assert_clean_log(log)
+                self.assertEqual(len(reader.pages), 1)
+                text = compact(reader.pages[0].extract_text())
+                for replacement in replacements.values():
+                    for field in re.findall(r"\{([^{}]+)\}", replacement) or [replacement]:
+                        self.assertIn(compact(field.replace("--", "–")), text)
+                self.assertEqual(links(reader), set(re.findall(r"\\href\{([^}]+)\}", source)))
+
     def test_heading_and_item_font_sizes_do_not_leak(self):
         preamble = self.source.split(r"\begin{document}", 1)[0]
         body = r"""
@@ -148,6 +186,7 @@ class ResumeTests(unittest.TestCase):
 \end{document}
 """
         _, log = self.compile_case("macro-font-scope", preamble + body)
+        self.assert_clean_log(log)
         sizes = re.findall(r"REVIEW-SIZE=([\d.]+)", log)
         self.assertEqual(len(sizes), 6)
         self.assertEqual(len(set(sizes)), 1, sizes)
